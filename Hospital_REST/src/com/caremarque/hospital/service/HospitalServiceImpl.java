@@ -259,7 +259,9 @@ public class HospitalServiceImpl implements IHospitalService {
 				hospital.setChannelingFee(rs.getString(Constants.COLUMN_INDEX_EIGHT));
 				arrayList.add(hospital);
 
-				result += "<tr><td>" + rs.getString(Constants.COLUMN_INDEX_ONE) + "</td>";
+				result += "<tr><td style=\"color:#008AD9;font-weight: bold;\">" 
+						+ "<input id='hidHospitalIdUpdate' name = 'hidHospitalIdUpdate' type='hidden' value='" +rs.getString(Constants.COLUMN_INDEX_ONE)+"'>"
+						+ rs.getString(Constants.COLUMN_INDEX_ONE) + "</td>";
 				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_TWO) + "</td>";
 				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_THREE) + "</td>";
 				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_FOUR) + "</td>";
@@ -267,8 +269,17 @@ public class HospitalServiceImpl implements IHospitalService {
 				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_SIX) + "</td>";
 				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_SEVEN) + "</td>";
 				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_EIGHT) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_NINE) + "</td>";
-
+				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_NINE) + "</td></tr>";
+				
+				result += "<td>"
+						+ "<input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-secondary' style= \"font-size: 14px;\">"
+						+ "</td>"
+						+ "<td>"
+						+ "<input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' style= \"font-size: 14px;\" data-appointmentid='"
+						+ rs.getString(Constants.COLUMN_INDEX_ONE) + "'>" 
+						+ "</td>"
+						+ "</tr>";
+				
 				System.out.println("Data Retrived");
 
 			}
