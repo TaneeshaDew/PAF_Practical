@@ -12,7 +12,8 @@ public interface IHospitalService {
 
 	public String getHospitals();
 
-	public String updateHospital(String hospitalId, Hospital hospital);
+	public String updateHospital(String hospitalId, String hospitalName, String phone, String regNo, String address,
+			String Open_Hours, String Close_Hours,String email,String channelingFee);
 
 	public String DeleteHospital(String hospitalId);
 
