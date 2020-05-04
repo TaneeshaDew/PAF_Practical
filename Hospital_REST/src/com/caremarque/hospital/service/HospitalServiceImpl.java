@@ -97,9 +97,15 @@ public class HospitalServiceImpl implements IHospitalService {
 			PreparedStatement preparedStatement=con.prepareStatement(query);
 			ResultSet rSet=preparedStatement.executeQuery();
 			
-			result = "<table border=\"1\"> <tr>" + "<th>hospitalId</th> " + "<th>hospitalName</th> " + "<th>phone</th> "
-					+ "<th>regNo</th> " + "<th>address</th> " + "<th>Open_Hours</th> " + "<th>Close_Hours</th> "+ "<th>email</th> " + "<th>channelingFee</th></tr> ";
-
+			result = "<table border=\"1\"> <tr><th>Hospital_ID</th> " 
+					+ "<th>HospitalName</th> " 
+					+ "<th>Address</th> " 
+					+ "<th>phone</th> "
+					+ "<th>RegNo</th> " 
+					+ "<th>Open_Hours</th> " 
+					+ "<th>Close_Hours</th> "
+					+ "<th>Email</th> " 
+					+ "<th>ChannelingFee</th></tr>";
 
 			while (rSet.next()) {
 
