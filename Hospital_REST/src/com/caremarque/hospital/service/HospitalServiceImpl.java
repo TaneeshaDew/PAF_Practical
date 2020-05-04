@@ -386,7 +386,7 @@ public class HospitalServiceImpl implements IHospitalService {
 
 			result = "Error while deleting the appointment";
 			System.err.println(e.getMessage());
-
+			Log.log(Level.SEVERE, e.getMessage());
 		} finally {
 
 			try {
