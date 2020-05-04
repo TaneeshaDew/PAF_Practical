@@ -226,9 +226,24 @@ public class HospitalServiceImpl implements IHospitalService {
 			st = con.createStatement();
 			rs = st.executeQuery(query);
 
-			result = "<table border=\"1\"> <tr>" + "<th>hospitalId</th> " + "<th>hospitalName</th> " + "<th>address</th> "
-					+ "<th>phone</th> " + "<th>regNo</th> " + "<th>Open_Hours</th> " + "<th>Close_Hours</th> " +  "<th>email</th> " + "<th>channelingFee</th></tr> ";
-
+			result ="<table border=\"1\"> <tr><th>hospitalId</th> " 
+					+ "<th>hospitalName</th> " 
+					+ "<th>address</th> " 
+					+ "<th>phone</th> "
+					+ "<th>regNo</th> " 
+					+ "<th>Open_Hours</th> " 
+					+ "<th>Close_Hours</th> "
+					+ "<th>email</th> "
+					+ "<th>channelingFee</th></tr>";
+			
+			result = "<table class=\" table table-sm table-responsive\" style=\"font-family: 'Roboto', sans-serif\" > "
+					+ "<tr>" + "<th scope=\"col\">hospitalId</th> " + "<th scope=\"col\">hospitalName</th> "
+					+ "<th scope=\"col\">address</th> " + "<th scope=\"col\">Phone</th> "
+					+ "<th scope=\"col\">regNo</th> " + "<th scope=\"col\">Open_Hours</th> "
+					+ "<th scope=\"col\">Close_Hours</th> " + "<th scope=\"col\">email</th> "
+					+ "<th scope=\"col\">channelingFee</th> "
+					+ "<th scope=\"col\">Update</th>" + "<th scope=\"col\">Delete</th>" + "</tr>";
+			
 			while (rs.next()) {
 
 				Hospital hospital = new Hospital();
