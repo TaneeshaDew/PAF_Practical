@@ -106,7 +106,7 @@ public class HospitalService {
 		hospital.setEmail(email);
 		hospital.setChannelingFee(channelingFee);
 
-		String result = iHospitalService.updateHospital(hospitalId, hospital);
+		String result = iHospitalService.updateHospital(hospitalId, hospitalName, phone, regNo, address, Open_Hours, Close_Hours, email, channelingFee);
 		return result;
 
 	}

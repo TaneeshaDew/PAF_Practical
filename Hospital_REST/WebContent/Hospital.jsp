@@ -13,7 +13,7 @@
 
 <!-- JS -->
 <script src="Components/jquery-3.2.1.min.js"></script>
-<script src="Components/appointment.js" type="text/javascript"></script>
+<script src="Components/hospital.js" type="text/javascript"></script>
 
 </head>
 <body>

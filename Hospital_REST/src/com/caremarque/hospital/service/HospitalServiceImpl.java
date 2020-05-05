@@ -313,31 +313,36 @@ public class HospitalServiceImpl implements IHospitalService {
 	}
 
 	@Override
-	public String updateHospital(String hospitalId, Hospital hospital) {
+	public String updateHospital(String hospitalId, String hospitalName, String phone, String regNo, String address,
+			String Open_Hours, String Close_Hours,String email,String channelingFee) {
 		
 		String result = "";
 		PreparedStatement preparedStatement = null;
 
 		try {
 			con = DBConnection.getDBConnection();
-
+			
 			String query = "UPDATE hospital SET hospitalId =?, hospitalName = ?, address = ?, phone = ?, regNo = ?, Open_Hours = ?, Close_Hours = ?, email = ?, channelingFee = ? WHERE hospitalId = ?";
 			preparedStatement = con.prepareStatement(query);
 
-			preparedStatement.setString(1, hospital.getHospitalId());
-			preparedStatement.setString(2, hospital.getHospitalName());
-			preparedStatement.setString(3, hospital.getAddress());
-			preparedStatement.setString(4, hospital.getPhone());
-			preparedStatement.setString(5, hospital.getRegNo());
-			preparedStatement.setString(6, hospital.getOpen_Hours());
-			preparedStatement.setString(7, hospital.getClose_Hours());
-			preparedStatement.setString(8, hospital.getEmail());
-			preparedStatement.setString(9, hospital.getChannelingFee());
-			preparedStatement.setString(10, hospital.getHospitalId());
+			preparedStatement.setString(Constants.COLUMN_INDEX_ONE, hospitalId);
+			preparedStatement.setString(Constants.COLUMN_INDEX_TWO, hospitalName);
+			preparedStatement.setString(Constants.COLUMN_INDEX_THREE, address);
+			preparedStatement.setString(Constants.COLUMN_INDEX_FOUR, phone);
+			preparedStatement.setString(Constants.COLUMN_INDEX_FIVE, regNo);
+			preparedStatement.setString(Constants.COLUMN_INDEX_SIX, Open_Hours);
+			preparedStatement.setString(Constants.COLUMN_INDEX_SEVEN, Close_Hours);
+			preparedStatement.setString(Constants.COLUMN_INDEX_EIGHT, email);
+			preparedStatement.setString(Constants.COLUMN_INDEX_NINE, channelingFee);
+			preparedStatement.setString(Constants.COLUMN_INDEX_TEN, hospitalId);
 
 			preparedStatement.execute();
 
-			result = "Successfully Updated";
+			System.out.println("Update HospitalID : " + hospitalId);
+			String newHospital = getHospitals();
+			
+			result = "{\"status\":\"success\", \"data\": \"" + newHospital + "\"}";
+			
 
 		} catch (Exception e) {
 			
