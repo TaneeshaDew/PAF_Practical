@@ -57,13 +57,14 @@ public class HospitalAPI extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("HospitalAPI");
 		Hospital hospital=new Hospital();
-		hospital.setHospitalName(request.getParameter(""));
-		hospital.setAddress(request.getParameter(""));
-		hospital.setPhone(request.getParameter(""));
-		hospital.setOpen_Hours(request.getParameter(""));
-		hospital.setClose_Hours(request.getParameter(""));
-		hospital.setEmail(request.getParameter(""));
-		hospital.setChannelingFee(request.getParameter(""));
+		hospital.setHospitalName(request.getParameter("hospitalName"));
+		hospital.setPhone(request.getParameter("phone"));
+		hospital.setRegNo(request.getParameter("regNo"));
+		hospital.setAddress(request.getParameter("address"));
+		hospital.setOpen_Hours(request.getParameter("Open_Hours"));
+		hospital.setClose_Hours(request.getParameter("Close_Hours"));
+		hospital.setEmail(request.getParameter("email"));
+		hospital.setChannelingFee(request.getParameter("channelingFee"));
 		
 		HospitalServiceImpl hospitalServiceImpl=new HospitalServiceImpl();
 		String result = hospitalServiceImpl.createHospital(hospital);
@@ -75,14 +76,35 @@ public class HospitalAPI extends HttpServlet {
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HospitalServiceImpl hospitalServiceImpl=new HospitalServiceImpl();
+		
+		Map paras = getParasMap(request);
+		System.out.println("Hospital Id: " + paras.get("hidHospitalIDSave").toString());
+		String result = hospitalServiceImpl.updateHospital(
+				paras.get("hidHospitalIDSave").toString(),
+				paras.get("hospitalName").toString(),
+				paras.get("phone").toString(),
+				paras.get("regNo").toString(),
+				paras.get("address").toString(),
+				paras.get("Open_Hours").toString(),
+				paras.get("Close_Hours").toString(),
+				paras.get("email").toString(),
+				paras.get("channelingFee").toString());
+				
+		response.getWriter().write(result);
+				
+				
+		
 	}
 
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HospitalServiceImpl hospitalServiceImpl=new HospitalServiceImpl();
+		Map paras	=	getParasMap(request);
+		String result = hospitalServiceImpl.DeleteHospital("hospitalId").toString();
+		response.getWriter().write(result);
 	}
 
 }
