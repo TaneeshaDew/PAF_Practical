@@ -82,7 +82,7 @@
 			</div>
 		
 			<input id="btnSave" name="btnSave" type="button"
-				value="Sign Up" class="btn btn-primary"> <input
+				value="Add Hospital" class="btn btn-primary"> <input
 				type="hidden" id="hidHospitalIdSave" name="hidHospitalIdSave"
 				value=""> <br> <br>
 
