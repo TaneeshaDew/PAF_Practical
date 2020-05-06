@@ -18,6 +18,7 @@ import com.caremarque.hospital.service.HospitalServiceImpl;
 @WebServlet("/HospitalAPI")
 public class HospitalAPI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	HospitalServiceImpl hospitalServiceImpl=new HospitalServiceImpl();
 
     /**
      * Default constructor. 
@@ -26,7 +27,7 @@ public class HospitalAPI extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 	private static Map getParasMap(HttpServletRequest request) {
-		
+		System.out.println("getParasMap");
 		Map<String, String> map = new HashMap<String, String>();
 		
 		try {
@@ -45,50 +46,48 @@ public class HospitalAPI extends HttpServlet {
 	}
 		
 		return map;
-	}
-
+}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		super.doGet(request, response);
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("HospitalAPI");
 		Hospital hospital=new Hospital();
 		hospital.setHospitalName(request.getParameter("hospitalName"));
+		hospital.setAddress(request.getParameter("address"));
 		hospital.setPhone(request.getParameter("phone"));
 		hospital.setRegNo(request.getParameter("regNo"));
-		hospital.setAddress(request.getParameter("address"));
 		hospital.setOpen_Hours(request.getParameter("Open_Hours"));
 		hospital.setClose_Hours(request.getParameter("Close_Hours"));
 		hospital.setEmail(request.getParameter("email"));
 		hospital.setChannelingFee(request.getParameter("channelingFee"));
 		
-		HospitalServiceImpl hospitalServiceImpl=new HospitalServiceImpl();
+		
 		String result = hospitalServiceImpl.createHospital(hospital);
 		System.out.println(result);
 		response.getWriter().write(result);
+		System.out.println("response :" + response);
 	}
 
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
+
+
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HospitalServiceImpl hospitalServiceImpl=new HospitalServiceImpl();
 		
 		Map paras = getParasMap(request);
-		System.out.println("Hospital Id: " + paras.get("hidHospitalIDSave").toString());
+		System.out.println("Hospital Id: " + paras.get("hidHospitalIdSave").toString());
 		String result = hospitalServiceImpl.updateHospital(
-				paras.get("hidHospitalIDSave").toString(),
-				paras.get("hospitalName").toString(),
+				paras.get("hidHospitalIdSave").toString(),
+				paras.get("hospitalName").toString().replace("+", " "),
+				paras.get("address").toString().replace("+", " "),
 				paras.get("phone").toString(),
 				paras.get("regNo").toString(),
-				paras.get("address").toString(),
-				paras.get("Open_Hours").toString(),
-				paras.get("Close_Hours").toString(),
-				paras.get("email").toString(),
+				paras.get("Open_Hours").toString().replace("%3A", ":"),
+				paras.get("Close_Hours").toString().replace("%3A", ":"),
+				paras.get("email").toString().replace("%40", "@"),
 				paras.get("channelingFee").toString());
 				
 		response.getWriter().write(result);
@@ -97,13 +96,11 @@ public class HospitalAPI extends HttpServlet {
 		
 	}
 
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
-	 */
+
+
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HospitalServiceImpl hospitalServiceImpl=new HospitalServiceImpl();
 		Map paras	=	getParasMap(request);
-		String result = hospitalServiceImpl.DeleteHospital("hospitalId").toString();
+		String result = hospitalServiceImpl.DeleteHospital(paras.get("hospitalId").toString());
 		response.getWriter().write(result);
 	}
 

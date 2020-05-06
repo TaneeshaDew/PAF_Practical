@@ -13,8 +13,9 @@
 
 <!-- JS -->
 <script src="Components/jquery-3.2.1.min.js"></script>
-<script src="Components/hospital.js" type="text/javascript"></script>
+<script src="Components/Hospital.js" type="text/javascript"></script>
 
+ 
 </head>
 <body>
 	<div class="container">
@@ -32,9 +33,6 @@
 						type="text" placeholder="Enter Your HospitalName...!" name="hospitalName"
 						id="hospitalName" class="form-control form-control-sm"><br />
 				</div>
-			</div>
-			
-			<div class="row">
 				<div class="col">
 					<label>Hospital Address <label_1>*</label_1></label><br /> <input
 						type="text" placeholder="Enter Your Address...!" name="address"
@@ -45,69 +43,60 @@
 			<div class="row">
 				<div class="col">
 					<label>Mobile Number <label_1>*</label_1></label><br /> <input
-						type="number" placeholder="Enter Your Number...!" name="phone"
+						type="text" placeholder="Enter Your Number...!" name="phone"
 						id="phone" class="form-control form-control-sm"><br />
 				</div>
-			</div>
-			
-			<div class="row">
 				<div class="col">
 					<label>Register Number <label_1>*</label_1></label><br /> <input
 						type="text" placeholder="Enter Your Registered_Number...!" name="regNo"
 						id="regNo" class="form-control form-control-sm"><br />
 				</div>
+				
 			</div>
 			
 			<div class="row">
-				<div class="col">
+					<div class="col">
 					<label>Open Hours <label_1>*</label_1></label><br /> <input
-						type="text" placeholder="Enter Opening Time...!" name="Open_Hours"
+						type="time" placeholder="Enter Opening Time...!" name="Open_Hours"
 						id="Open_Hours" class="form-control form-control-sm"><br />
 				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col">
+					<div class="col">
 					<label>Close Hours <label_1>*</label_1></label><br /> <input
-						type="text" placeholder="Enter Closing Time...!" name="Close_Hours"
+						type="time" placeholder="Enter Closing Time...!" name="Close_Hours"
 						id="Close_Hours" class="form-control form-control-sm"><br />
 				</div>
 			</div>
 			
 			<div class="row">
-				<div class="col">
+					<div class="col">
 					<label>Email<label_1>*</label_1></label><br /> <input
 						type="text" placeholder="Enter Your Email...!" name="email"
 						id="email" class="form-control form-control-sm"><br />
 				</div>
-			</div>
-			
-			<div class="row">
 				<div class="col">
 					<label>Channeling Fee <label_1>*</label_1></label><br /> <input
 						type="text" placeholder="Enter Your ChannelingFee...!" name="channelingFee"
 						id="channelingFee" class="form-control form-control-sm"><br />
 				</div>
+				
 			</div>
-			
-			
-			
+		
 			<input id="btnSave" name="btnSave" type="button"
-				value="Add Appointment" class="btn btn-primary"> <input
+				value="Sign Up" class="btn btn-primary"> <input
 				type="hidden" id="hidHospitalIdSave" name="hidHospitalIdSave"
 				value=""> <br> <br>
 
-			<div id="alertSuccess" class="alert alert-success"></div>
-			<div id="alertError" class="alert alert-danger"></div>
-
 		</form>
-		<div id="divAppointmentsGrid">
+		
+		<div id="alertSuccess" class="alert alert-success"></div>
+		<div id="alertError" class="alert alert-danger"></div>
+		
+		<div id="divHospitalsGrid">
 			<%
 				HospitalServiceImpl hospitalServiceImpl = new HospitalServiceImpl();
 				out.print(hospitalServiceImpl.getHospitals());
 			%>
 		</div>
-
 
 	</div>
 		

@@ -26,16 +26,16 @@ public class HospitalServiceImpl implements IHospitalService {
 
 	public static Connection con;
 	public static Statement st;
-
+	public static PreparedStatement preparedStatement;
 	@Override
 	public String createHospital(Hospital hospital) {
 		
 
 		String result = null;
-		PreparedStatement preparedStatement = null;
+		 
 
 		String hospitalId = CommonUtils.generateHospitalIDs(getHospitalIDs());
-		System.out.println("hospitalId " + hospitalId);
+		System.out.println("hospitalId " +hospitalId );
 
 		try {
 			con = DBConnection.getDBConnection();
@@ -46,23 +46,23 @@ public class HospitalServiceImpl implements IHospitalService {
 			preparedStatement = con.prepareStatement(query);
 
 			hospital.setHospitalId(hospitalId);
-			preparedStatement.setString(1, hospital.getHospitalId());
-			preparedStatement.setString(2, hospital.getHospitalName());
-			preparedStatement.setString(3, hospital.getAddress());
-			preparedStatement.setString(4, hospital.getPhone());
-			preparedStatement.setString(5, hospital.getRegNo());
-			preparedStatement.setString(6, hospital.getOpen_Hours());
-			preparedStatement.setString(7, hospital.getClose_Hours());
-			preparedStatement.setString(8, hospital.getEmail());
-			preparedStatement.setString(9, hospital.getChannelingFee());
+			preparedStatement.setString(Constants.COLUMN_INDEX_ONE, hospital.getHospitalId());
+			preparedStatement.setString(Constants.COLUMN_INDEX_TWO, hospital.getHospitalName());
+			preparedStatement.setString(Constants.COLUMN_INDEX_THREE, hospital.getAddress());
+			preparedStatement.setString(Constants.COLUMN_INDEX_FOUR, hospital.getPhone());
+			preparedStatement.setString(Constants.COLUMN_INDEX_FIVE, hospital.getRegNo());
+			preparedStatement.setString(Constants.COLUMN_INDEX_SIX, hospital.getOpen_Hours());
+			preparedStatement.setString(Constants.COLUMN_INDEX_SEVEN, hospital.getClose_Hours());
+			preparedStatement.setString(Constants.COLUMN_INDEX_EIGHT, hospital.getEmail());
+			preparedStatement.setString(Constants.COLUMN_INDEX_NINE, hospital.getChannelingFee());
 
 			preparedStatement.executeUpdate();
-
-			result = "Hospital  profile created Successfully";
+			String newHospital = getHospitals();
+			result = "{\"status\":\"success\", \"data\": \"" + newHospital + "\"}";
 
 		} catch (Exception e) {
 
-			result = "Hospital Profile Not created";
+			result =  "{\"status\" : \"error\", \"data\" : \"Error while registering to the system..!\"}";
 			System.err.println(e.getMessage());
 			Log.log(Level.SEVERE, e.getMessage());
 		} finally {
@@ -226,59 +226,40 @@ public class HospitalServiceImpl implements IHospitalService {
 			st = con.createStatement();
 			rs = st.executeQuery(query);
 
-			result ="<table border=\"1\"> <tr><th>hospitalId</th> " 
-					+ "<th>hospitalName</th> " 
-					+ "<th>address</th> " 
-					+ "<th>phone</th> "
-					+ "<th>regNo</th> " 
-					+ "<th>Open_Hours</th> " 
-					+ "<th>Close_Hours</th> "
-					+ "<th>email</th> "
-					+ "<th>channelingFee</th></tr>";
+			result ="<table class = 'table table-striped table-responsive' style='width:120%; margin-left: -40px'>" +
+					 "<tr style='background-color:#1985a1; color:#ffffff;'><th>Hospital Id</th>" + "<th>Hospital Name</th>" + "<th>Address</th>" +
+					 "<th>Phone</th>" + "<th>Reg_No</th>" + "<th>Opening_Hours</th>" + "<th>Closing_Hours</th>" +
+					 "<th>Email</th>" + "<th>ChannelingFee</th>" + "<th>Update</th>" + "<th>Remove</th></tr>";
 			
-			result = "<table class=\" table table-sm table-responsive\" style=\"font-family: 'Roboto', sans-serif\" > "
-					+ "<tr>" + "<th scope=\"col\">hospitalId</th> " + "<th scope=\"col\">hospitalName</th> "
-					+ "<th scope=\"col\">address</th> " + "<th scope=\"col\">Phone</th> "
-					+ "<th scope=\"col\">regNo</th> " + "<th scope=\"col\">Open_Hours</th> "
-					+ "<th scope=\"col\">Close_Hours</th> " + "<th scope=\"col\">email</th> "
-					+ "<th scope=\"col\">channelingFee</th> "
-					+ "<th scope=\"col\">Update</th>" + "<th scope=\"col\">Delete</th>" + "</tr>";
 			
 			while (rs.next()) {
 
-				Hospital hospital = new Hospital();
+				String hospitalId = rs.getString("hospitalId");
+				String hospitalName = rs.getString("hospitalName");
+				String address = rs.getString("address");
+				String phone  = rs.getString("phone");
+				String regNo  = rs.getString("regNo");
+				String Open_Hours  = rs.getString("Open_Hours");
+				String Close_Hours  = rs.getString("Close_Hours");
+				String email  = rs.getString("email");
+				String channelingFee  = rs.getString("channelingFee");
+		
+				System.out.println("GetAllAPtient : PatientId : " + hospitalId);
 
+				result += "<tr><td><input id = 'hidHospitalIdUpdate' name = 'hidHospitalIdUpdate' type='hidden' value = '" + hospitalId + "'>" + hospitalId + "</td>";
 				
-				hospital.setHospitalName(rs.getString(Constants.COLUMN_INDEX_ONE));
-				hospital.setAddress(rs.getString(Constants.COLUMN_INDEX_TWO));
-				hospital.setPhone(rs.getString(Constants.COLUMN_INDEX_THREE));
-				hospital.setRegNo(rs.getString(Constants.COLUMN_INDEX_FOUR));
-				hospital.setOpen_Hours(rs.getString(Constants.COLUMN_INDEX_FIVE));
-				hospital.setClose_Hours(rs.getString(Constants.COLUMN_INDEX_SIX));
-				hospital.setEmail(rs.getString(Constants.COLUMN_INDEX_SEVEN));
-				hospital.setChannelingFee(rs.getString(Constants.COLUMN_INDEX_EIGHT));
-				arrayList.add(hospital);
-
-				result += "<tr><td style=\"color:#008AD9;font-weight: bold;\">" 
-						+ "<input id='hidHospitalIdUpdate' name = 'hidHospitalIdUpdate' type='hidden' value='" +rs.getString(Constants.COLUMN_INDEX_ONE)+"'>"
-						+ rs.getString(Constants.COLUMN_INDEX_ONE) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_TWO) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_THREE) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_FOUR) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_FIVE) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_SIX) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_SEVEN) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_EIGHT) + "</td>";
-				result += "<td>" + rs.getString(Constants.COLUMN_INDEX_NINE) + "</td></tr>";
+				result += "<td>" + hospitalName + "</td>";
+				result += "<td>" + address + "</td>";
+				result += "<td>" + phone + "</td>";
+				result += "<td>" + regNo + "</td>";
+				result += "<td>" + Open_Hours + "</td>";
+				result += "<td>" + Close_Hours + "</td>";
+				result += "<td>" + email + "</td>";
+				result += "<td>" + channelingFee + "</td>";
 				
-				result += "<td>"
-						+ "<input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-secondary' style= \"font-size: 14px;\">"
-						+ "</td>"
-						+ "<td>"
-						+ "<input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' style= \"font-size: 14px;\" data-appointmentid='"
-						+ rs.getString(Constants.COLUMN_INDEX_ONE) + "'>" 
-						+ "</td>"
-						+ "</tr>";
+				result += "<td><input name = 'btnUpdate' type = 'button' value = 'Update' class = 'btnUpdate btn btn-success btn-sm'></td>"
+						+ "<td><input name = 'btnRemove' type = 'button' value = 'Remove' class = 'btnRemove btn btn-danger btn-sm' data-hospitalid = '"+ hospitalId +"'>" 
+						+ "</td></tr>";
 				
 				System.out.println("Data Retrived");
 
@@ -313,28 +294,28 @@ public class HospitalServiceImpl implements IHospitalService {
 	}
 
 	@Override
-	public String updateHospital(String hospitalId, String hospitalName, String phone, String regNo, String address,
+	public String updateHospital(String hospitalId, String hospitalName, String address, String phone, String regNo,
 			String Open_Hours, String Close_Hours,String email,String channelingFee) {
 		
 		String result = "";
-		PreparedStatement preparedStatement = null;
+		
 
 		try {
 			con = DBConnection.getDBConnection();
 			
-			String query = "UPDATE hospital SET hospitalId =?, hospitalName = ?, address = ?, phone = ?, regNo = ?, Open_Hours = ?, Close_Hours = ?, email = ?, channelingFee = ? WHERE hospitalId = ?";
+			String query = "UPDATE hospital SET  hospitalName = ?, address = ?, phone = ?, regNo = ?, Open_Hours = ?, Close_Hours = ?, email = ?, channelingFee = ? WHERE hospitalId = ?";
 			preparedStatement = con.prepareStatement(query);
 
-			preparedStatement.setString(Constants.COLUMN_INDEX_ONE, hospitalId);
-			preparedStatement.setString(Constants.COLUMN_INDEX_TWO, hospitalName);
-			preparedStatement.setString(Constants.COLUMN_INDEX_THREE, address);
-			preparedStatement.setString(Constants.COLUMN_INDEX_FOUR, phone);
-			preparedStatement.setString(Constants.COLUMN_INDEX_FIVE, regNo);
-			preparedStatement.setString(Constants.COLUMN_INDEX_SIX, Open_Hours);
-			preparedStatement.setString(Constants.COLUMN_INDEX_SEVEN, Close_Hours);
-			preparedStatement.setString(Constants.COLUMN_INDEX_EIGHT, email);
-			preparedStatement.setString(Constants.COLUMN_INDEX_NINE, channelingFee);
-			preparedStatement.setString(Constants.COLUMN_INDEX_TEN, hospitalId);
+			
+			preparedStatement.setString(Constants.COLUMN_INDEX_ONE, hospitalName);
+			preparedStatement.setString(Constants.COLUMN_INDEX_TWO, address);
+			preparedStatement.setString(Constants.COLUMN_INDEX_THREE, phone);
+			preparedStatement.setString(Constants.COLUMN_INDEX_FOUR, regNo);
+			preparedStatement.setString(Constants.COLUMN_INDEX_FIVE, Open_Hours);
+			preparedStatement.setString(Constants.COLUMN_INDEX_SIX, Close_Hours);
+			preparedStatement.setString(Constants.COLUMN_INDEX_SEVEN, email);
+			preparedStatement.setString(Constants.COLUMN_INDEX_EIGHT, channelingFee);
+			preparedStatement.setString(Constants.COLUMN_INDEX_NINE, hospitalId);
 
 			preparedStatement.execute();
 
@@ -347,7 +328,7 @@ public class HospitalServiceImpl implements IHospitalService {
 		} catch (Exception e) {
 			
 
-			result = "Update Error has Occured";
+			result = "{\"status\":\"error\", \"data\":\"Error while updating the patient details..!\"}"; 
 			System.err.println(e.getMessage());
 			Log.log(Level.SEVERE, e.getMessage());
 		} finally {
@@ -372,7 +353,6 @@ public class HospitalServiceImpl implements IHospitalService {
 		
 
 		String result = "";
-		PreparedStatement pStatement = null;
 		Connection con = null;
 
 		try {
@@ -380,23 +360,26 @@ public class HospitalServiceImpl implements IHospitalService {
 
 			String query = "DELETE FROM hospital WHERE hospitalId = ?";
 
-			pStatement = con.prepareStatement(query);
+			preparedStatement = con.prepareStatement(query);
 			
-			pStatement.setString(1, hospitalId);
-			pStatement.execute();
+			preparedStatement.setString(Constants.COLUMN_INDEX_ONE, hospitalId);
+			preparedStatement.execute();
+			String newHospital = getHospitals();
 
-			result = "Deleted " + hospitalId + " ";
+			result = "{\"status\":\"success\", \"data\": \"" + newHospital + "\"}"; 
+
 
 		} catch (Exception e) {
 
-			result = "Error while deleting the appointment";
+			result = "{\"status\":\"error\", \"data\":\"Error while deleting the patient account..!\"}"; 
+			
 			System.err.println(e.getMessage());
 			Log.log(Level.SEVERE, e.getMessage());
 		} finally {
 
 			try {
-				if (pStatement != null) {
-					pStatement.close();
+				if (preparedStatement != null) {
+					preparedStatement.close();
 				}
 
 				if (con != null) {
@@ -415,21 +398,21 @@ public class HospitalServiceImpl implements IHospitalService {
 	@Override
 	public ArrayList<String> getHospitalIDs() {
 
-		PreparedStatement preparedStatement = null;
+		
 		ResultSet resultSet = null;
 
-		ArrayList<String> arrayList = new ArrayList<String>();
+		ArrayList<String> hospitalList = new ArrayList<String>();
 
 		try {
 			con = DBConnection.getDBConnection();
 
-			String queryString = "SELECT hospital.hospitalId FROM hospital";
+			String queryString = "SELECT hospitalId FROM hospital";
 
 			preparedStatement = con.prepareStatement(queryString);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-				arrayList.add(resultSet.getString(1));
+				hospitalList.add(resultSet.getString(1));
 
 			}
 		} catch (Exception e) {
@@ -449,8 +432,8 @@ public class HospitalServiceImpl implements IHospitalService {
 				Log.log(Level.SEVERE, e.getMessage());
 			}
 		}
-		System.out.println(arrayList.size());
-		return arrayList;
+		System.out.println(hospitalList.size());
+		return hospitalList;
 	}
 	
 	public String createAppointment(String hospitalId) {
